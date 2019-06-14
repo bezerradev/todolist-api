@@ -17,6 +17,16 @@ require('dotenv').config()
 app.set('port', (process.env.PORT || 5000));
 app.set('views', __dirname + '/public');
 
+var salvarProjeto = function (t) {
+  let tarefas = carregarProjetos();
+  tarefas.push(t);
+
+  for (var i = 0; i < tarefas.length; i++) {
+    tarefas[i].id = i;
+  }
+
+  fs.writeFileSync('tarefas.json', JSON.stringify(tarefas));
+}
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/main.html'));
 });

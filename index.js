@@ -49,6 +49,18 @@ app.post('/tarefa', function(req, res) {
   res.json(jsonTarefas);
 });
 
+app.post('/tarefas', function(req, res) {
+  fs.writeFileSync('tarefas.json', JSON.stringify(req.body));
+
+  res.json({status: "ok"});
+});
+
+app.post('/projetos', function(req, res) {
+  fs.writeFileSync('projetos.json', JSON.stringify(req.body));
+
+  res.json({status: "ok"});
+});
+
 
 app.post('/projeto', function(req, res) {
   var novoProjeto = {

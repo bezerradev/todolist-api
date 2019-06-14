@@ -12,7 +12,7 @@
         app.controller('mainController', function ($scope, $http) {
              $scope.apiUrl = 'https://toodoapi.herokuapp.com';
 
-             $scope.onloadFun = function() {
+             $scope.init = function() {
 
                 $http.get($scope.apiUrl + '/projetos')
                 .then(function(response) {
@@ -22,7 +22,9 @@
 
                 console.log("entrou");
             };
-
+            $scope.idTarefaAtual = 1;
+            $scope.idProjetoAtual = 1;
+            
             // $scope.projetos = [
             //     { id: 1, nome: 'DIETA' },
             //     { id: 2, nome: 'CONCURSO' },
@@ -40,33 +42,63 @@
             $scope.tarefasMostrar = [];
 
             $scope.adicionarProjeto = function (projeto) {
-                var id = $scope.projetos[$scope.projetos.length - 1].id + 1;
+                $http.get($scope.apiUrl + '/projetos')
+                .then(function(response) {
+                   $scope.projetos = response.data.projetos;
+                   console.log(response.data.projetos);
+                });
+
+                var id = $scope.idProjetoAtual;
+                $scope.idProjetoAtual++;
+
                 $scope.projetos.push({ id: id, nome: projeto.nome });
                 delete $scope.projeto;
-            };
 
-            $scope.adicionarProjetoApi = function(projeto) {
-                $http.post($scope.apiUrl + '/projeto', {nome: projeto.nome})
+                $http.post($scope.apiUrl + '/projetos', {projetos: $scope.projetos})
                 .then(function(response) {
                     console.log(response);
                 });
+            };
+
+            $scope.adicionarProjetoApi = function(projeto) {
+
+                $http.post($scope.apiUrl + '/projeto', {nome: projeto.nome})
+                .then(function(response) {
 
                 $http.get($scope.apiUrl + '/projetos')
                 .then(function(response) {
                    $scope.projetos = response.data.projetos;
                    console.log(response.data.projetos);
                 });
+
+                });
+
+
             }
 
 
             $scope.adicionarTarefa = function (tarefa) {
-                var id = $scope.tarefas[$scope.tarefas.length - 1].id + 1;
+
+                $http.get($scope.apiUrl + '/tarefas')
+                .then(function(response) {
+                   $scope.tarefas = response.data.tarefas;
+                   console.log(response.data.tarefas);
+                });
+
+                var id = $scope.idTarefaAtual;
+                $scope.idTarefaAtual++;
+
                 var dataHoje = new Date().toJSON().slice(0, 10);
                 var dataPrazo = tarefa.prazo;
                 var dataPrazoString = dataPrazo.toJSON().slice(0, 10);
                 $scope.tarefas.push({ id: id, nome: tarefa.nome, prazo: dataPrazoString, dataCricao: dataHoje, idProjeto: $scope.projetoSelecionado });
                 $scope.tarefasMostrar = $scope.tarefas.filter(function (tarefa) {
                     if (tarefa.idProjeto == $scope.projetoSelecionado) return tarefa;
+                });
+
+                $http.post($scope.apiUrl + '/projetos', {projetos: $scope.projetos})
+                .then(function(response) {
+                    console.log(response);
                 });
 
                 delete $scope.tarefa;
@@ -126,6 +158,18 @@
             };
 
             $scope.removerProjetoSelecionadoApi = function () {
+                $http.get($scope.apiUrl + '/projetos')
+                .then(function(response) {
+                   $scope.projetos = response.data.projetos;
+                   console.log(response.data.projetos);
+                });
+
+                $http.get($scope.apiUrl + '/tarefas')
+                .then(function(response) {
+                   $scope.tarefas = response.data.tarefas;
+                   console.log(response.data.tarefas);
+                });
+
 
                 $scope.projetos = $scope.projetos.filter(function (projeto) {
                     if (projeto.id != $scope.projetoSelecionado) return projeto;
@@ -134,7 +178,16 @@
                 $scope.tarefas = $scope.tarefas.filter(function (tarefa) {
                     if (tarefa.idProjeto != $scope.projetoSelecionado) return tarefa;
                 });
-                console.log($scope.projetos);
+
+                $http.post($scope.apiUrl + '/tarefas', {tarefas: $scope.tarefas})
+                .then(function(response) {
+                    console.log(response);
+                });
+
+                $http.post($scope.apiUrl + '/projetos', {projetos: $scope.projetos})
+                .then(function(response) {
+                    console.log(response);
+                });
             };
 
             $scope.removerProjetoSelecionadoApi = function (projeto) {
@@ -166,7 +219,7 @@
     </style>
 </head>
 
-<body ng-controller="mainController">
+<body ng-controller="mainController" data-ng-init="init()">
     <div class="jumbotron">
         <h1 class="text-center">TODO List</h1>
     </div>
@@ -186,9 +239,9 @@
                     Nome:<input class="form-control" type="text" ng-model="projeto.nome"
                         placeholder="Nome do projeto" />
                     <button type="button" class="btn btn-primary btn-block"
-                        ng-click="adicionarProjetoApi(projeto)">Cadastrar Projeto</button>
+                        ng-click="adicionarProjeto(projeto)">Cadastrar Projeto</button>
                     <button type="button" class="btn btn-danger btn-block"
-                        ng-click="removerProjetoSelecionadoApi(projeto)">Remover Projeto</button>
+                        ng-click="removerProjetoSelecionado(projeto)">Remover Projeto</button>
                 </div>
             </div>
 
@@ -211,7 +264,7 @@
 
                 Nome:<input class="form-control" type="text" ng-model="tarefa.nome" placeholder="Nome da tarefa" />
                 Prazo:<input class="form-control" type="date" ng-model="tarefa.prazo">
-                <button type="button" class="btn btn-primary btn-block" ng-click="adicionarTarefaApi(tarefa)">Cadastrar
+                <button type="button" class="btn btn-primary btn-block" ng-click="adicionarTarefa(tarefa)">Cadastrar
                     Tarefa</button>
                 <button type="button" class="btn btn-danger btn-block" ng-click="removerTarefa(tarefas)">Remover
                     Tarefa</button>

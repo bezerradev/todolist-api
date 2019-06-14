@@ -25,12 +25,13 @@ var salvarProjeto = function (t) {
 
   fs.writeFileSync('tarefas.json', JSON.stringify(tarefas));
 }
+
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 app.get('/projetos', function(req, res) {
-  return JSON.parse(fs.readFileSync('projetos.json'));
+  return JSON.parse(fs.readFileSync(path.join(__dirname + '/projetos.json')));
 });
 
 

@@ -14,7 +14,7 @@ app.set('port', (process.env.PORT || 5000));
 app.set('views', __dirname + '/public');
 
 app.get('/', function(req, res) {
-	res.json({ mensagem: 'funfou!' });
+	res.json({ mensagem: 'funcionou!' });
 });
 
 app.listen(app.get('port'), function() {

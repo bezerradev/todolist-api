@@ -70,7 +70,7 @@ app.post('/projeto', function(req, res) {
 
   var jsonProjetos = JSON.parse(fs.readFileSync('projetos.json'));
 
-  jsonProjetos.tarefas.push(novaTarefa);
+  jsonProjetos.tarefas.push(novoProjeto);
 
   fs.writeFileSync('projetos.json', JSON.stringify(jsonProjetos));
 

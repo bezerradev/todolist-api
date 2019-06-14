@@ -50,11 +50,12 @@ app.post('/tarefas', function(req, res) {
   idAtualTarefa++;
 
   var jsonTarefas = JSON.parse(fs.readFileSync('tarefas.json'));
-  console.log(jsonTarefas);
-  
+
   jsonTarefas.tarefas.push(novaTarefa);
 
   fs.writeFileSync('tarefas.json', JSON.stringify(jsonTarefas));
+
+  res.json(jsonTarefas);
 });
 
 app.listen(app.get('port'), function() {

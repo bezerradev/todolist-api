@@ -35,8 +35,8 @@ app.get('/projetos', function(req, res) {
 });
 
 
-app.post('/tarefas', function(req, res) {
-	res.json({ mensagem: 'funcionou!' });
+app.get('/tarefas', function(req, res) {
+	 res.json(JSON.parse(fs.readFileSync('tarefas.json')));
 });
 
 app.listen(app.get('port'), function() {

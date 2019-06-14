@@ -53,7 +53,7 @@ app.post('/tarefas', function(req, res) {
 
   jsonTarefas.tarefas.push(novaTarefa);
 
-   fs.writeFileSync('tarefas.json', JSON.stringify(tarefas));
+   fs.writeFileSync('tarefas.json', JSON.stringify(jsonTarefas));
 });
 
 app.listen(app.get('port'), function() {

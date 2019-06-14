@@ -15,7 +15,6 @@ var idAtualTarefa = 1;
 
 require('dotenv').config()
 app.set('port', (process.env.PORT || 5000));
-app.set('views', __dirname + '/public');
 
 var salvarProjeto = function (t) {
   let tarefas = carregarProjetos();

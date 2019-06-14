@@ -51,21 +51,17 @@
                     $scope.idProjetoAtual++;
 
                     $scope.projetoSelecionado = response.data.projetoSelecionado;
-                    
+
                     $scope.projetos.push({ id: id, nome: projeto.nome });
-                });
 
-
-
-                $http.post($scope.apiUrl + '/projetos', {projetos: $scope.projetos,
+                    $http.post($scope.apiUrl + '/projetos', {projetos: $scope.projetos,
                     projetoSelecionado: $scope.projetoSelecionado})
-                .then(function(response) {
-                    console.log(response);
+                    .then(function(response) {
+                        console.log(response);
 
                       // delete $scope.projeto;
+                    });
                 });
-;
-
             };
 
             $scope.adicionarProjetoApi = function(projeto) {

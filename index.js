@@ -51,8 +51,6 @@ app.post('/tarefa', function(req, res) {
 
   idAtualTarefa++;
 
-  console.log(novaTarefa);
-
   var jsonTarefas = JSON.parse(fs.readFileSync('tarefas.json'));
 
   jsonTarefas.tarefas.push(novaTarefa);
@@ -76,6 +74,25 @@ app.post('/projeto', function(req, res) {
   jsonProjetos.projetos.push(novoProjeto);
 
   fs.writeFileSync('projetos.json', JSON.stringify(jsonProjetos));
+
+  res.json(jsonProjetos);
+});
+
+app.delete('/projeto', function(req, res) {
+  var jsonProjetos = JSON.parse(fs.readFileSync('projetos.json'));
+
+  var jsonTarefas = JSON.parse(fs.readFileSync('tarefas.json'))
+
+  jsonProjetos = jsonProjetos.projetos.filter(function(projeto) {
+    if (projeto.id != req.body.id) return projeto;
+  });
+
+  jsonTarefas = jsonTarefas.tarefas.filter(function(tarefa) {
+    if (tarefa.idProjeto != req.body.id) return tarefa;
+  });
+
+  fs.writeFileSync('projetos.json', JSON.stringify(jsonProjetos));
+  fs.writeFileSync('tarefas.json', JSON.stringify(jsonProjetos));
 
   res.json(jsonProjetos);
 });

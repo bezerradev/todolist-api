@@ -12,11 +12,19 @@
         app.controller('mainController', function ($scope, $http) {
              $scope.apiUrl = 'https://toodoapi.herokuapp.com';
 
-            $scope.projetos = [
-                { id: 1, nome: 'DIETA' },
-                { id: 2, nome: 'CONCURSO' },
-                { id: 3, nome: 'LEITURA' }
-            ];
+             $scope.$on('$viewContentLoaded', function() {
+                $http.get($scope.apiUrl + '/projetos')
+                .then(function(response) {
+                   $scope.projetos = response.data.projetos;
+                   console.log(response.data.projetos);
+                });
+            });
+
+            // $scope.projetos = [
+            //     { id: 1, nome: 'DIETA' },
+            //     { id: 2, nome: 'CONCURSO' },
+            //     { id: 3, nome: 'LEITURA' }
+            // ];
 
             $scope.projetoSelecionado = 1;
 
@@ -38,6 +46,12 @@
                 $http.post($scope.apiUrl + '/projeto', {nome: projeto.nome})
                 .then(function(response) {
                     console.log(response);
+                });
+
+                $http.get($scope.apiUrl + '/projetos')
+                .then(function(response) {
+                   $scope.projetos = response.data.projetos;
+                   console.log(response.data.projetos);
                 });
             }
 
@@ -173,7 +187,7 @@
                     <tr ng-repeat="tarefa in tarefasMostrar">
                         <td><input type="checkbox" ng-model="tarefa.selecionada" /></td>
                         <td>{{tarefa.nome}}</td>
-                        <td>{{tarefa.dataCricao}}</td>
+                        <td>{{tarefa.dataCriacao}}</td>
                         <td>{{tarefa.prazo}}</td>
                     </tr>
                 </table>

@@ -39,7 +39,7 @@ app.get('/tarefas', function(req, res) {
 	 res.json(JSON.parse(fs.readFileSync('tarefas.json')));
 });
 
-app.post('/projeto', function(req, res) {
+app.post('/tarefa', function(req, res) {
   var novaTarefa = {
     id: idAtualTarefa,
     nome: req.body.nome,

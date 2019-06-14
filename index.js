@@ -45,16 +45,17 @@ app.post('/tarefa', function(req, res) {
     nome: req.body.nome,
     prazo: req.body.prazo,
     dataCriacao: req.body.dataCriacao,
+    selecionada: req.body.selecionada,
     idProjeto: req.body.idProjeto
   };
 
   idAtualTarefa++;
 
-  var jsonTarefas = JSON.parse(fs.readFileSync('projeto.json'));
+  var jsonTarefas = JSON.parse(fs.readFileSync('tarefas.json'));
 
   jsonTarefas.tarefas.push(novaTarefa);
 
-  fs.writeFileSync('projeto.json', JSON.stringify(jsonTarefas));
+  fs.writeFileSync('tarefas.json', JSON.stringify(jsonTarefas));
 
   res.json(jsonTarefas);
 });

@@ -55,6 +55,25 @@
                 delete $scope.tarefa;
             };
 
+            $scope.adicionarTarefaApi = function (tarefa) {
+
+                var dataHoje = new Date().toJSON().slice(0, 10);
+                var dataPrazo = tarefa.prazo;
+                var dataPrazoString = dataPrazo.toJSON().slice(0, 10);
+                var tarefaNova = {nome: tarefa.nome, prazo: dataPrazoString, dataCricao: dataHoje, idProjeto: $scope.projetoSelecionado, selecionada: tarefa.selecionada};
+
+                $http.post($scope.apiUrl + '/tarefa', tarefaNova)
+                .then(function(response) {
+                    console.log(response);
+                });
+
+                $scope.tarefasMostrar = $scope.tarefas.filter(function (tarefa) {
+                    if (tarefa.idProjeto == $scope.projetoSelecionado) return tarefa;
+                });
+
+                delete $scope.tarefa;
+            };
+
             $scope.removerTarefa = function (tarefas) {
 
                 $scope.tarefas = tarefas.filter(function (tarefa) {
@@ -155,7 +174,7 @@
 
                 Nome:<input class="form-control" type="text" ng-model="tarefa.nome" placeholder="Nome da tarefa" />
                 Prazo:<input class="form-control" type="date" ng-model="tarefa.prazo">
-                <button type="button" class="btn btn-primary btn-block" ng-click="adicionarTarefa(tarefa)">Cadastrar
+                <button type="button" class="btn btn-primary btn-block" ng-click="adicionarTarefaApi(tarefa)">Cadastrar
                     Tarefa</button>
                 <button type="button" class="btn btn-danger btn-block" ng-click="removerTarefa(tarefas)">Remover
                     Tarefa</button>

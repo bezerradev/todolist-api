@@ -49,9 +49,9 @@ app.post('/tarefas', function(req, res) {
 
   idAtualTarefa++;
 
-  var tarefas = JSON.parse(fs.readFileSync('tarefas.json'));
+  var jsonTarefas = JSON.parse(fs.readFileSync('tarefas.json'));
 
-  tarefas.push(novaTarefa);
+  jsonTarefas.tarefas.push(novaTarefa);
 
    fs.writeFileSync('tarefas.json', JSON.stringify(tarefas));
 });

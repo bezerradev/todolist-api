@@ -37,7 +37,7 @@
             $scope.adicionarProjetoApi = function(projeto) {
                 $http.post($scope.apiUrl + '/projeto', {nome: projeto.nome})
                 .then(function(response) {
-                    res.json({status: "sucesso!"});
+                    console.log(response);
                 });
             }
 

@@ -50,11 +50,11 @@ app.post('/projeto', function(req, res) {
 
   idAtualTarefa++;
 
-  var jsonTarefas = JSON.parse(fs.readFileSync('tarefas.json'));
+  var jsonTarefas = JSON.parse(fs.readFileSync('projeto.json'));
 
   jsonTarefas.tarefas.push(novaTarefa);
 
-  fs.writeFileSync('tarefas.json', JSON.stringify(jsonTarefas));
+  fs.writeFileSync('projeto.json', JSON.stringify(jsonTarefas));
 
   res.json(jsonTarefas);
 });

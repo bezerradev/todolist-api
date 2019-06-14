@@ -9,7 +9,7 @@
     <script>
         var app = angular.module('todoList', []);
 
-        app.controller('mainController', function ($scope) {
+        app.controller('mainController', function ($scope, $http) {
             $scope.projetos = [
                 { id: 1, nome: 'DIETA' },
                 { id: 2, nome: 'CONCURSO' },

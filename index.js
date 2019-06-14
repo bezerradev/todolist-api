@@ -40,7 +40,20 @@ app.get('/tarefas', function(req, res) {
 });
 
 app.post('/tarefas', function(req, res) {
-   fs.writeFileSync('tarefas.json', JSON.stringify(req.body));
+  var novaTarefa = {
+    id: idAtualTarefa,
+    nome: req.body.nome,
+    prazo: req.body.prazo,
+    dataCriacao: req.body.dataCriacao
+  };
+
+  idAtualTarefa++;
+
+  var tarefas = JSON.parse(fs.readFileSync('tarefas.json'));
+
+  tarefas.push(novaTarefa);
+
+   fs.writeFileSync('tarefas.json', JSON.stringify(tarefas));
 });
 
 app.listen(app.get('port'), function() {

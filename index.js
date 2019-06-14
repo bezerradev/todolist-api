@@ -63,14 +63,14 @@ app.post('/tarefa', function(req, res) {
 app.post('/projeto', function(req, res) {
   var novoProjeto = {
     id: idAtualTarefa,
-    nome: req.body.nome,
+    nome: req.body.nome
   };
 
   idAtualProjeto++;
 
   var jsonProjetos = JSON.parse(fs.readFileSync('projetos.json'));
 
-  jsonProjetos.tarefas.push(novoProjeto);
+  jsonProjetos.projetos.push(novoProjeto);
 
   fs.writeFileSync('projetos.json', JSON.stringify(jsonProjetos));
 

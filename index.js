@@ -31,8 +31,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/projetos', function(req, res) {
-  console.log(fs.readFileSync(path.join(__dirname + '/projetos.json')));
-  return JSON.parse(fs.readFileSync(path.join(__dirname + '/projetos.json')));
+  res.json(JSON.parse(fs.readFileSync('projetos.json')));
 });
 
 

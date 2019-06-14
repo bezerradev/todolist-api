@@ -39,6 +39,10 @@ app.get('/tarefas', function(req, res) {
 	 res.json(JSON.parse(fs.readFileSync('tarefas.json')));
 });
 
+app.post('/tarefas', function(req, res) {
+   fs.writeFileSync('tarefas.json', JSON.stringify(req.body));
+});
+
 app.listen(app.get('port'), function() {
   console.log("Node app running at localhost:" + app.get('port'));
 });

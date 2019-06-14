@@ -9,7 +9,9 @@
     <script>
         var app = angular.module('todoList', []);
 
-        app.controller('mainController', function ($scope) {
+        app.controller('mainController', function ($scope, $http) {
+             $scope.apiUrl = 'https://toodoapi.herokuapp.com';
+
             $scope.projetos = [
                 { id: 1, nome: 'DIETA' },
                 { id: 2, nome: 'CONCURSO' },
@@ -31,6 +33,13 @@
                 $scope.projetos.push({ id: id, nome: projeto.nome });
                 delete $scope.projeto;
             };
+
+            $scope.adicionarProjetoApi = function(projeto) {
+                $http.post($scope.apiUrl + '/projeto', {nome: projeto.nome})
+                .then(function(response) {
+                    res.json({status: "sucesso!"});
+                });
+            }
 
 
             $scope.adicionarTarefa = function (tarefa) {
@@ -121,7 +130,7 @@
                     Nome:<input class="form-control" type="text" ng-model="projeto.nome"
                         placeholder="Nome do projeto" />
                     <button type="button" class="btn btn-primary btn-block"
-                        ng-click="adicionarProjeto(projeto)">Cadastrar Projeto</button>
+                        ng-click="adicionarProjetoApi(projeto)">Cadastrar Projeto</button>
                     <button type="button" class="btn btn-danger btn-block"
                         ng-click="removerProjetoSelecionado()">Remover Projeto</button>
                 </div>

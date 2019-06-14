@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="todoList">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+
+    <script>
+        var app = angular.module('todoList', []);
+
+        app.controller('mainController', function ($scope) {
+            $scope.projetos = [
+                { id: 1, nome: 'DIETA' },
+                { id: 2, nome: 'CONCURSO' },
+                { id: 3, nome: 'LEITURA' }
+            ];
+
+            $scope.projetoSelecionado = 1;
+
+            $scope.tarefas = [
+                { id: 1, nome: 'COMER FRUTAS', prazo: '2019-10-10', dataCricao: '2019-08-21', idProjeto: 1 },
+                { id: 2, nome: 'ESTUDAR MATEMÁTICA', prazo: '2019-12-10', dataCricao: '2019-08-21', idProjeto: 2 },
+                { id: 3, nome: 'LER HARRY POTTER', prazo: '2019-09-11', dataCricao: '2019-08-21', idProjeto: 3 }
+            ];
+
+            $scope.tarefasMostrar = [];
+
+            $scope.adicionarProjeto = function (projeto) {
+                var id = $scope.projetos[$scope.projetos.length - 1].id + 1;
+                $scope.projetos.push({ id: id, nome: projeto.nome });
+                delete $scope.projeto;
+            };
+
+
+            $scope.adicionarTarefa = function (tarefa) {
+                var id = $scope.tarefas[$scope.tarefas.length - 1].id + 1;
+                var dataHoje = new Date().toJSON().slice(0, 10);
+                var dataPrazo = tarefa.prazo;
+                var dataPrazoString = dataPrazo.toJSON().slice(0, 10);
+                $scope.tarefas.push({ id: id, nome: tarefa.nome, prazo: dataPrazoString, dataCricao: dataHoje, idProjeto: $scope.projetoSelecionado });
+                $scope.tarefasMostrar = $scope.tarefas.filter(function (tarefa) {
+                    if (tarefa.idProjeto == $scope.projetoSelecionado) return tarefa;
+                });
+
+                delete $scope.tarefa;
+            };
+
+            $scope.removerTarefa = function (tarefas) {
+
+                $scope.tarefas = tarefas.filter(function (tarefa) {
+                    if (!tarefa.selecionada) return tarefa;
+                });
+                $scope.tarefasMostrar = $scope.tarefas.filter(function (tarefa) {
+                    if (tarefa.idProjeto == $scope.projetoSelecionado) return tarefa;
+                });
+            };
+
+            $scope.setProjetoSelecionado = function (idProjeto) {
+                $scope.projetoSelecionado = idProjeto;
+
+                $scope.tarefasMostrar = $scope.tarefas.filter(function (tarefa) {
+                    if (tarefa.idProjeto == $scope.projetoSelecionado) return tarefa;
+                });
+            };
+
+            $scope.removerProjetoSelecionado = function () {
+
+                console.log($scope.projetos);
+
+                $scope.projetos = $scope.projetos.filter(function (projeto) {
+                    if (projeto.id != $scope.projetoSelecionado) return projeto;
+                });
+
+                $scope.tarefas = $scope.tarefas.filter(function (tarefa) {
+                    if (tarefa.idProjeto != $scope.projetoSelecionado) return tarefa;
+                });
+                console.log($scope.projetos);
+            };
+        });
+    </script>
+    <title>Todo List</title>
+
+    <style>
+        #projetos {
+            /* background-color: #DDDDDD; */
+        }
+
+        #tarefas {
+            /* background-color: #DDDDDD; */
+        }
+
+        .form-control {
+            margin-bottom: 10px;
+
+        }
+
+        #projetos {
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body ng-controller="mainController">
+    <div class="jumbotron">
+        <h1 class="text-center">TODO List</h1>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+            <div id="projetos" class="col-4">
+                <h2 class="text-center">Projetos</h2>
+                <div class="custom-control custom-radio" ng-repeat="projeto in projetos">
+                    <input type="radio" id="projeto{{ projeto.id }}" name="projeto" class="custom-control-input"
+                        ng-click="setProjetoSelecionado(projeto.id)">
+                    <label class="custom-control-label" for="projeto{{ projeto.id }}">{{ projeto.nome }}</label>
+                </div>
+
+                <div>
+                    Nome:<input class="form-control" type="text" ng-model="projeto.nome"
+                        placeholder="Nome do projeto" />
+                    <button type="button" class="btn btn-primary btn-block"
+                        ng-click="adicionarProjeto(projeto)">Cadastrar Projeto</button>
+                    <button type="button" class="btn btn-danger btn-block"
+                        ng-click="removerProjetoSelecionado()">Remover Projeto</button>
+                </div>
+            </div>
+
+            <div id="tarefas" class="col-6">
+                <h2 class="text-center">Tarefas</h2>
+                <table ng-show="tarefasMostrar.length > 0" class="table table-striped">
+                    <tr>
+                        <th></th>
+                        <th>DESCRICÃO</th>
+                        <th>DATA DE CRIAÇÃO</th>
+                        <th>PRAZO</th>
+                    </tr>
+                    <tr ng-repeat="tarefa in tarefasMostrar">
+                        <td><input type="checkbox" ng-model="tarefa.selecionada" /></td>
+                        <td>{{tarefa.nome}}</td>
+                        <td>{{tarefa.dataCricao}}</td>
+                        <td>{{tarefa.prazo}}</td>
+                    </tr>
+                </table>
+
+                Nome:<input class="form-control" type="text" ng-model="tarefa.nome" placeholder="Nome da tarefa" />
+                Prazo:<input class="form-control" type="date" ng-model="tarefa.prazo">
+                <button type="button" class="btn btn-primary btn-block" ng-click="adicionarTarefa(tarefa)">Cadastrar
+                    Tarefa</button>
+                <button type="button" class="btn btn-danger btn-block" ng-click="removerTarefa(tarefas)">Remover
+                    Tarefa</button>
+            </div>
+
+
+        </div>
+
+    </div>
+</body>
+
+</html>

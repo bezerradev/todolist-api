@@ -127,7 +127,12 @@
                 console.log(tarefaNova);
                 $http.post($scope.apiUrl + '/tarefa', tarefaNova)
                 .then(function(response) {
-                    console.log(response);
+                    
+                $http.get($scope.apiUrl + '/tarefas')
+                .then(function(response) {
+                   $scope.tarefas = response.data.tarefas;
+                   console.log(response.data.tarefas);
+                });
                 });
 
                 $scope.tarefasMostrar = $scope.tarefas.filter(function (tarefa) {

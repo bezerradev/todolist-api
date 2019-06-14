@@ -51,6 +51,8 @@ app.post('/tarefa', function(req, res) {
 
   idAtualTarefa++;
 
+  console.log(novaTarefa);
+
   var jsonTarefas = JSON.parse(fs.readFileSync('tarefas.json'));
 
   jsonTarefas.tarefas.push(novaTarefa);

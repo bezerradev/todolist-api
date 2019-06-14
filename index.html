@@ -61,8 +61,17 @@
                 var dataPrazo = tarefa.prazo;
                 var dataPrazoString = dataPrazo.toJSON().slice(0, 10);
 
-                var tarefaNova = {nome: tarefa.nome, prazo: dataPrazoString, dataCriacao: dataHoje, idProjeto: $scope.projetoSelecionado, selecionada: tarefa.selecionada};
+                var tarefaNova = { 
+                                   nome: tarefa.nome,
+                                   prazo: dataPrazoString, 
+                                   dataCriacao: new Date().toJSON().slice(0, 10),
+                                   selecionada: tarefa.selecionada,
+                                   idProjeto: $scope.projetoSelecionado
+                                   
+                };
 
+
+                console.log(tarefaNova);
                 $http.post($scope.apiUrl + '/tarefa', tarefaNova)
                 .then(function(response) {
                     console.log(response);
@@ -88,6 +97,12 @@
             $scope.setProjetoSelecionado = function (idProjeto) {
                 $scope.projetoSelecionado = idProjeto;
 
+                $http.get($scope.apiUrl + '/tarefas')
+                .then(function(response) {
+                   $scope.tarefas = response.data.tarefas;
+                   console.log(response.data.tarefas);
+                });
+
                 $scope.tarefasMostrar = $scope.tarefas.filter(function (tarefa) {
                     if (tarefa.idProjeto == $scope.projetoSelecionado) return tarefa;
                 });
@@ -111,19 +126,9 @@
     <title>Todo List</title>
 
     <style>
-        #projetos {
-            /* background-color: #DDDDDD; */
-        }
-
-        #tarefas {
-            /* background-color: #DDDDDD; */
-        }
-
         .form-control {
             margin-bottom: 10px;
-
         }
-
         #projetos {
             padding: 5px;
         }

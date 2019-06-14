@@ -60,7 +60,8 @@
                 var dataHoje = new Date().toJSON().slice(0, 10);
                 var dataPrazo = tarefa.prazo;
                 var dataPrazoString = dataPrazo.toJSON().slice(0, 10);
-                var tarefaNova = {nome: tarefa.nome, prazo: dataPrazoString, dataCricao: dataHoje, idProjeto: $scope.projetoSelecionado, selecionada: tarefa.selecionada};
+
+                var tarefaNova = {nome: tarefa.nome, prazo: dataPrazoString, dataCriacao: dataHoje, idProjeto: $scope.projetoSelecionado, selecionada: tarefa.selecionada};
 
                 $http.post($scope.apiUrl + '/tarefa', tarefaNova)
                 .then(function(response) {

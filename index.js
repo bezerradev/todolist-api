@@ -73,6 +73,8 @@ app.post('/projeto', function(req, res) {
   var jsonProjetos = JSON.parse(fs.readFileSync('projetos.json'));
 
   jsonProjetos.projetos.push(novoProjeto);
+  
+  jsonProjetos.projetoSelecionado = req.body.projetoSelecionado;
 
   fs.writeFileSync('projetos.json', JSON.stringify(jsonProjetos));
 

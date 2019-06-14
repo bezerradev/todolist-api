@@ -46,18 +46,26 @@
                 .then(function(response) {
                    $scope.projetos = response.data.projetos;
                    console.log(response.data.projetos);
+
+                    var id = $scope.idProjetoAtual;
+                    $scope.idProjetoAtual++;
+
+                    $scope.projetoSelecionado = response.data.projetoSelecionado;
+                    
+                    $scope.projetos.push({ id: id, nome: projeto.nome });
                 });
 
-                var id = $scope.idProjetoAtual;
-                $scope.idProjetoAtual++;
 
-                $scope.projetos.push({ id: id, nome: projeto.nome });
-                delete $scope.projeto;
 
-                $http.post($scope.apiUrl + '/projetos', {projetos: $scope.projetos})
+                $http.post($scope.apiUrl + '/projetos', {projetos: $scope.projetos,
+                    projetoSelecionado: $scope.projetoSelecionado})
                 .then(function(response) {
                     console.log(response);
+
+                      delete $scope.projeto;
                 });
+;
+
             };
 
             $scope.adicionarProjetoApi = function(projeto) {
@@ -231,7 +239,7 @@
                 <h2 class="text-center">Projetos</h2>
                 <div class="custom-control custom-radio" ng-repeat="projeto in projetos">
                     <input type="radio" id="projeto{{ projeto.id }}" name="projeto" class="custom-control-input"
-                        ng-click="setProjetoSelecionado(projeto.id)">
+                        ng-click="setProjetoSelecionado(projeto.setado)">
                     <label class="custom-control-label" for="projeto{{ projeto.id }}">{{ projeto.nome }}</label>
                 </div>
 

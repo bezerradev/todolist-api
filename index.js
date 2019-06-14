@@ -44,7 +44,7 @@ app.post('/projeto', function(req, res) {
     id: idAtualTarefa,
     nome: req.body.nome,
     prazo: req.body.prazo,
-    dataCriacao: req.body.dataCriacao
+    dataCriacao: req.body.dataCriacao,
     idProjeto: req.body.idProjeto
   };
 

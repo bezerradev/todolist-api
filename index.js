@@ -29,9 +29,10 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get('/tarefas', function(req, res) {
-	res.json({ mensagem: 'funcionou!' });
+app.get('/projetos', function(req, res) {
+  return JSON.parse(fs.readFileSync('projetos.json'));
 });
+
 
 app.post('/tarefas', function(req, res) {
 	res.json({ mensagem: 'funcionou!' });

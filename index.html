@@ -12,13 +12,16 @@
         app.controller('mainController', function ($scope, $http) {
              $scope.apiUrl = 'https://toodoapi.herokuapp.com';
 
-             $scope.$on('$viewContentLoaded', function() {
+             $scope.onloadFun = function() {
+
                 $http.get($scope.apiUrl + '/projetos')
                 .then(function(response) {
                    $scope.projetos = response.data.projetos;
                    console.log(response.data.projetos);
                 });
-            });
+
+                console.log("entrou");
+            };
 
             // $scope.projetos = [
             //     { id: 1, nome: 'DIETA' },
@@ -28,11 +31,11 @@
 
             $scope.projetoSelecionado = 1;
 
-            $scope.tarefas = [
-                { id: 1, nome: 'COMER FRUTAS', prazo: '2019-10-10', dataCricao: '2019-08-21', idProjeto: 1 },
-                { id: 2, nome: 'ESTUDAR MATEMÁTICA', prazo: '2019-12-10', dataCricao: '2019-08-21', idProjeto: 2 },
-                { id: 3, nome: 'LER HARRY POTTER', prazo: '2019-09-11', dataCricao: '2019-08-21', idProjeto: 3 }
-            ];
+            // $scope.tarefas = [
+            //     { id: 1, nome: 'COMER FRUTAS', prazo: '2019-10-10', dataCricao: '2019-08-21', idProjeto: 1 },
+            //     { id: 2, nome: 'ESTUDAR MATEMÁTICA', prazo: '2019-12-10', dataCricao: '2019-08-21', idProjeto: 2 },
+            //     { id: 3, nome: 'LER HARRY POTTER', prazo: '2019-09-11', dataCricao: '2019-08-21', idProjeto: 3 }
+            // ];
 
             $scope.tarefasMostrar = [];
 
@@ -122,9 +125,7 @@
                 });
             };
 
-            $scope.removerProjetoSelecionado = function () {
-
-                console.log($scope.projetos);
+            $scope.removerProjetoSelecionadoApi = function () {
 
                 $scope.projetos = $scope.projetos.filter(function (projeto) {
                     if (projeto.id != $scope.projetoSelecionado) return projeto;
@@ -134,6 +135,22 @@
                     if (tarefa.idProjeto != $scope.projetoSelecionado) return tarefa;
                 });
                 console.log($scope.projetos);
+            };
+
+            $scope.removerProjetoSelecionadoApi = function (projeto) {
+
+                $http.delete($scope.apiUrl + '/projeto', projeto.id)
+                .then(function(response) {
+                   console.log(response.data);
+                });
+
+
+                $http.get($scope.apiUrl + '/projetos')
+                .then(function(response) {
+                   $scope.projetos = response.data.projetos;
+                   console.log(response.data.projetos);
+                });
+
             };
         });
     </script>
@@ -171,7 +188,7 @@
                     <button type="button" class="btn btn-primary btn-block"
                         ng-click="adicionarProjetoApi(projeto)">Cadastrar Projeto</button>
                     <button type="button" class="btn btn-danger btn-block"
-                        ng-click="removerProjetoSelecionado()">Remover Projeto</button>
+                        ng-click="removerProjetoSelecionadoApi(projeto)">Remover Projeto</button>
                 </div>
             </div>
 
